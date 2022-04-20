@@ -1,0 +1,130 @@
+﻿@using BC;
+@model dynamic
+@{
+    ViewData["Title"] = "Home Page";
+}
+@{
+    var identity = (System.Security.Claims.ClaimsIdentity)Context.User.Identity;
+    var name = identity.Claims.FirstOrDefault(c => c.Type == "user").Value;
+}
+<div class="container">
+    <div class="background-circle">
+        <div class="row h-100">
+                        <div class="col-sm-1">
+                                <a class="btn-my" asp-action="Index" asp-controller="Home">
+                                            <span class="button__icon">
+                                                    <ion-icon name="home-outline"></ion-icon>
+                                            </span>
+                                 </a>
+                                <a class="btn-my" asp-action="Index" asp-controller="User">
+                                        <span class="button__icon"  >
+                                                <ion-icon name="person-outline"></ion-icon>
+                                        </span>
+                                </a>
+                                <a  class="btn-my" asp-action="Create" asp-controller="Meteo" asp-area="">
+                                        <span class="button__icon">
+                                                <ion-icon name="add-outline"></ion-icon>
+                                        </span>
+                                </a>
+                                <a  class="btn-my" asp-action="ListStations" asp-controller="Meteo" asp-area="">
+                                        <span class="button__icon">
+                                                <ion-icon name="hardware-chip-outline"></ion-icon>
+                                        </span>
+                                </a>
+                                <a class="btn-my" asp-action="Graphs" asp-controller="GraphExport">
+                                        <span class="button__icon">
+                                                <ion-icon name="stats-chart-outline"></ion-icon>
+                                        </span>
+                                </a>
+                                <a  class="btn-my" asp-action="Index" asp-controller="WeatherApi">
+                                        <span class="button__icon">
+                                                <i class="bi bi-cloud-moon"></i>
+                                        </span>
+                                        
+                                </a>
+                                <a class="btn-my" asp-action="Logout" asp-controller="Home">
+                                        <span class="button__icon">
+                                               <ion-icon name="log-out-outline"></ion-icon>
+                                        </span>
+                                        
+                                </a>
+                                
+                        </div>
+                <div class="col-sm-11">
+                            <div class="row" >
+                                <div class="col-sm-9 greetings">
+                                    <div class="row row-align">
+                                        <div class="col">
+                                            <div class="greetings-text" id="greetings-text"></div>
+                                            <div class="date" id="date"> </div>
+                                            
+                                        </div>
+                                        <div class="col-1"></div>
+                                        <div class="time" id="time"></div>
+                                    </div>
+                                </div>
+                                    <div class="col-sm-3 meteo">
+                                        <div class="dropdown-side">
+                                            <button class="dropbtn-side">Choose meteostation</button>
+                                            <div class="dropdown-content-side">
+                                            @if(Model.Device.Count != 0){
+                                                    @foreach(Device device in Model.Device){
+                                                        <a class="next" asp-area="" asp-controller="Home" asp-action="GetStation" asp-route-id="@device.DevID">@Html.DisplayFor(modelItem => device.Name)</a>
+                                                        <br/>
+                                                }
+                                            }
+                                            else{
+                                                    <li class="navlink text-dark">No meteostations!</li>
+                                            }
+                                            </div>
+                                        </div>
+                                    </div>
+            
+                                    <div class="col-sm-9 bottom-div">
+
+                                         <div id="content-wrapper" class="content-wrapper"></div>
+                                            
+                                    </div>
+
+                                    <div class="col-sm-3">
+                                        <div class="row right-side" style="display:none;">
+                                            <div class="col-6">
+                                                <div class="icons" id="icons">
+                                            </div>
+                                            </div>
+                                            <div class="col-6">
+                                                <div class="icons-text1" id="icons-text1"></div>
+                                                <div class="icons-text" id="icons-text"></div>
+                                            </div>
+                                            
+                                            
+                                         </div>
+                                    </div>
+                            </div>
+                    </div>
+                </div>
+    </div>
+</div>
+<script type="text/javascript">
+    fillText();
+    fillIcons();
+    greetings('@name');
+    setDate();
+    setTime();
+    getPostData();
+    var dt = new Date();
+    window.setInterval(function () {
+            getPostData();
+        
+    }, 60000);
+    window.setInterval(function () {
+            setTime();
+        
+    }, 1000*(60-dt.getSeconds()));
+
+    window.setInterval(function () {
+            setDate();
+        
+    }, 1000*(24-dt.getHours()));
+
+</script>

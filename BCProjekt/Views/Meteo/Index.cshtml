@@ -1,0 +1,89 @@
+@model BC.Models.Device
+@{
+    ViewData["Title"] = "Add weather station";
+}
+<h2>Add new weather station</h2>
+
+<div class="row-my">
+    <div class="col-md-4">
+        <div class="addMeteoDiv shadow-lg p-4  rounded">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <img src="../background/icons/questionmark30.png" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Please input meteostation name. For example: My meteo1"/>
+                <input asp-for="Name" class="form-control"/>
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Manufacturer" class="control-label"></label>
+                <img src="../background/icons/questionmark30.png" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Please input meteostation Manufacturer. For example: My Wario"/>
+                <input asp-for="Manufacturer" class="form-control"/>
+                <span asp-validation-for="Manufacturer" class="text-danger"></span>
+            </div>
+            @*Tady bude na vyber typ komunikace. IP, RS485 atd..*@
+            
+            <div class="form-group">
+                <label asp-for="LoadType" class="control-label"></label>
+                <img src="../background/icons/questionmark30.png" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Please input meteostation name. For example: My meteo1"/>
+                <input asp-for="LoadType" class="form-control"/>
+                <span asp-validation-for="LoadType" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Protocol" class="control-label"></label>
+                <img src="../background/icons/questionmark30.png" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Please input meteostation name. For example: My meteo1"/>
+                <input asp-for="Protocol" class="form-control"/>
+                <span asp-validation-for="Protocol" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Geolocation" class="control-label"></label>
+                <img src="../background/icons/questionmark30.png" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Please input where is meteostation located. For example: Ostrava-Zabreh Starobelska 52."/>
+                <input asp-for="Geolocation" class="form-control"/>
+                <span asp-validation-for="Geolocation" class="text-danger"></span>
+            </div>
+                   
+            <div class="form-group">
+                <label asp-for="TimeDelay" class="control-label"></label>
+                <img src="../background/icons/questionmark30.png" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Please input number. That number will specify after what time the page refresh data. For example: 5 = this will refresh the page every 5 minutes."/>
+                <input asp-for="TimeDelay" class="form-control"/>
+                <span asp-validation-for="TimeDelay" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Address" class="control-label"></label>
+                <img src="../background/icons/questionmark30.png" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Please input your meteostation IP address. For example: 192.168.0.10.8"/>
+                <input asp-for="Address" class="form-control"/>
+                <span asp-validation-for="Address" class="text-danger"></span>
+            </div>
+
+            <label style="margin-top:8px;">Chooose preffered type of communicaton</label>
+            <img src="../background/icons/questionmark30.png" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Please input what type of cummunication you prefer. PUSH - listening on URL and waiting for data or GET - requesting data from meteostation."/>
+            <div class="btn-group btn-group-toggle" data-toggle="buttons"style="width:100%; margin-top:8px;">
+              <label class="btn btn-secondary active">
+                <input type="radio" name="options" id="option1" autocomplete="off" checked value="POST" asp-for="PrefferedCommunication" > GET
+              </label>
+              <label class="btn btn-secondary">
+                <input type="radio" name="options" id="option2" autocomplete="off" asp-for="PrefferedCommunication" value="GET"> PUSH
+              </label>
+            </div>
+            
+            @*Tady jeste udelat nejaky dynamicky box na to, ze si bude vybirat jake senzory chce*@
+            <button class="btnSensor" type="button" id="btnSensor">Add sensor</button>
+            <div class="addSensor" id="addSensor"></div>
+
+            <div class="row justify-content-md-center">
+                <div class="col-sm">
+                    @*<input type="submit" value="Create" class="btn btn-primary" />*@
+                    <button type="submit" class="btn btn-primary login-btn-without-border">Add station</button>
+                    </div>
+                    <div class="col-sm">
+                    @*<a href="../../Home" value="Cancel" class="btn btn-primary" style="padding-top:12px;">Cancel</a>*@
+                    <button class="btn btn-primary login-btn-without-border" asp-action="Index" asp-controller="Home" >Cancel</button>
+                </div>
+            </div>
+            
+
+        </form>
+    </div>
+</div>
+</div>

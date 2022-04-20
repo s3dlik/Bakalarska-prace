@@ -1,0 +1,144 @@
+@model BC.Models.Device
+@{
+    ViewData["Title"] = "Edit";
+    List<string> array = new List<string>();
+    
+
+}
+<h2 class="nadpis">Edit meteostation: @Html.DisplayFor(model=>model.Name)</h2>
+<div class="row justify-content-center">
+    <div class="col-md-4">
+        <div class="addMeteoDiv shadow-lg p-4  rounded">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input asp-for="DevID" type="hidden"/>
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <img src="../../background/icons/questionmark30.png" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Please input meteostation name. For example: My meteo1"/>
+                <input asp-for="Name" class="form-control"/>
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="col">
+                        <div class="row justify-content-center">
+                        <label class="control-label">Manufacturer</label>
+                        <img src="../background/icons/questionmark30.png" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Please input meteostation Manufacturer. For example: My Wario"/>
+                        </div>
+                        <div class="row justify-content-center">
+                                <select class="form-select" aria-label=".form-select-lg example" asp-for="Manufacturer" id="manuSelect"style="width:100%; padding-bottom:10px; ">
+                                    <option value="Default" name="manufacturerSelect">Choose manufacturer from below</option>
+                                  <option value="Wario" name="manufacturerSelect">Wario</option>
+                                  @*Here you can add custom manufacturer and also adjust javascript in file site.js*@
+                                </select>
+                        </div>
+            </div>
+            <label></label>
+            <div class="form-group">
+                <label asp-for="Address" class="control-label"></label>
+                <img src="../../background/icons/questionmark30.png" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Please input your meteostation IP address. For example: 192.168.0.10.8"/>
+                <input asp-for="Address" class="form-control" id="editAddressInput"/>
+                <span asp-validation-for="Address" class="text-danger"></span>
+                
+            </div>
+
+            <label style="margin-top:8px;">Chooose preffered protocol</label>
+            <img src="../../background/icons/questionmark30.png" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Please input what type of cummunication you prefer. PUSH - listening on URL and waiting for data or GET - requesting data from meteostation."/>
+            <div class="btn-group btn-group-toggle" data-toggle="buttons"style="width:100%; margin-top:8px;">
+              <label class="btn btn-secondary active">
+                <input type="radio" name="protocol" id="optionProtocol1" autocomplete="off" checked value="IP" asp-for="Protocol" > IP
+                <span asp-validation-for="Protocol" class="text-danger"></span>
+              </label>
+              <label class="btn btn-secondary">
+                <input type="radio" name="protocol" id="optionProtocol2" autocomplete="off" asp-for="Protocol" value="RS-485"> RS-485
+                 <span asp-validation-for="Protocol" class="text-danger"></span>
+              </label>
+              <label class="btn btn-secondary">
+                <input type="radio" name="protocol" id="optionProtocol3" autocomplete="off" asp-for="Protocol" value="RS-232"> RS-232
+                 <span asp-validation-for="Protocol" class="text-danger"></span>
+              </label>
+            </div>
+
+            @*Tady bude na vyber typ komunikace. IP, RS485 atd..*@
+            <label style="margin-top:8px;">Choose load data type</label>
+            <img src="../../background/icons/questionmark30.png" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Please choose one of the method. XML - server will accept XML file and process data from content of GET/POST request. CSV - server will accept CSV file and will process data from CSV file. URL - server will accept data from URL parameters."/>
+            <div class="btn-group btn-group-toggle" data-toggle="buttons"style="width:100%; margin-top:8px;">
+              <label class="btn btn-secondary active">
+                <input type="radio" name="loadType" id="option1" autocomplete="off" value="URL" asp-for="LoadType" > XML
+                <span asp-validation-for="LoadType" class="text-danger"></span>
+              </label>
+              <label class="btn btn-secondary">
+                <input type="radio" name="loadType" id="option2" autocomplete="off"  asp-for="LoadType" value="XML" > URL
+                <span asp-validation-for="LoadType" class="text-danger"></span>
+              </label>
+              <label class="btn btn-secondary">
+                <input type="radio" name="loadType" id="option3" autocomplete="off" asp-for="LoadType" value="CSV"> CSV
+                <span asp-validation-for="LoadType" class="text-danger"></span>
+              </label>
+            </div>
+            
+
+            <div class="form-group">
+                <label asp-for="Geolocation" class="control-label"></label>
+                <img src="../../background/icons/questionmark30.png" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Please input where is meteostation located. For example: Ostrava-Zabreh Starobelska 52."/>
+                <input asp-for="Geolocation" class="form-control"/>
+                <span asp-validation-for="Geolocation" class="text-danger"></span>
+            </div>
+                   
+            <div class="form-group">
+                <div class="row">
+                    <div class="col">
+                        <label asp-for="TimeDelay" class="control-label"></label>
+                        <img src="../background/icons/questionmark30.png" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Please input number. That number will specify after what time the page refresh data. For example: 5 = this will refresh the page every 5 unit that you will choose."/>
+                        <input asp-for="TimeDelay" class="form-control"/>
+                        <span asp-validation-for="TimeDelay" class="text-danger"></span>
+                    </div>
+                    <div class="col">
+                        <div class="row justify-content-center">
+                        <label class="control-label">Unit</label>
+                        <img src="../background/icons/questionmark30.png" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Please choose unit type. For example: if you want to refresh every 5 minutes, input 5 into TimeDelay and choose minutes."/>
+                        </div>
+                        <div class="row justify-content-center">
+                                <select class="form-select units" aria-label=".form-select-lg example" asp-for="Units">
+                                  <option value="Minutes" name="unitVal" >Minutes</option>
+                                  <option value="Hours" name="unitVal" >Hours</option>
+                                </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+
+            <label style="margin-top:8px;">Chooose preffered type of communicaton</label>
+            <img src="../../background/icons/questionmark30.png" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Please input what type of cummunication you prefer. PUSH - listening on URL and waiting for data or GET - requesting data from meteostation."/>
+            <div class="btn-group btn-group-toggle" data-toggle="buttons"style="width:100%; margin-top:8px;">
+              <label class="btn btn-secondary active">
+                <input type="radio" name="options" id="option1" autocomplete="off" checked value="GET" asp-for="PrefferedCommunication" > GET
+              </label>
+              <label class="btn btn-secondary">
+                <input type="radio" name="options" id="option2" autocomplete="off" asp-for="PrefferedCommunication" value="POST"> POST
+              </label>
+            </div>
+            <div id="DeviceItems"></div>
+                @if (@Model.Sensors != null) 
+                { 
+                    @foreach(var item in @Model.Sensors)
+                    {
+                        <script type="text/javascript">DeviceAddWithValues('@item.Name')</script>
+                        array.Add(@item.Name);
+                    }
+                    var json = Json.Serialize(array);
+
+                    <button class="btnSensor" type="button" id="btnSensor" onclick="EditSensors(@json.ToString())">+ Add sensors  <img src="../../background/icons/questionmark30.png" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Add sensor names that you want to use. Please check URL/XML or CSV file to specify exact sensor names."/></button>
+                  
+                }
+                
+                <div id="selectNewSensors"></div>
+            <div class="form-group">
+                <button type="submit" value="Save" class="btn btn-primary">Save</button>
+                <a asp-action="ListStations" value="Cancel" class="btn btn-secondary">Cancel</a>
+            </div>
+            
+
+        </form>
+    </div>
+</div>
+</div>

@@ -1,0 +1,42 @@
+@model BC.Models.User
+<div class="loginPageDiv shadow-lg p-3 mb-5 rounded">
+        <h2>Please log in</h2>
+        <form asp-controller="Home" asp-action="Login" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" role="form">
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true)
+            @if (@ViewBag.Message != null)
+            {
+                <div class="alert alert-danger d-flex align-items-center" role="alert">
+                    <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
+                    <div>
+                        @ViewBag.Message
+                    </div>
+                </div>
+            }
+
+            <div class="form-group">
+                <label asp-for="Login" class="control-label"></label>
+                <input asp-for="Login" type="text" class="form-control"/>
+                <span asp-validation-for="Login" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Password" class="control-label"></label>
+                <input asp-for="Password" type="password" class="form-control"/>
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+
+
+            <div class="row justify-content-center">
+                <div class="col-3">
+                    <button type="submit" value="Log in" class="btn btn-primary login-btn" style="width:100%;">Log in</button>
+                </div>
+            </div>
+
+        </form>
+        <div class="row justify-content-center">
+                <div class="col-3">
+                    <a class="btn btn-primary login-btn" asp-action="Register" asp-controller="Home" style="width:100%;">Register</a>
+                </div>
+        </div>
+</div>

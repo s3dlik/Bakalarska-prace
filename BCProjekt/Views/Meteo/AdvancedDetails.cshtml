@@ -1,0 +1,106 @@
+@model BC.Models.Device
+@{
+	var count = @Model.Sensors.Count;
+	int counter=0;
+}
+<h2 class="nadpis">Advanced details for meteo: @Model.Name</h2>
+<div class="profileDiv shadow-lg p-5 mb-8 rounded">
+
+		<div class="row">
+			<div class="col text">
+				@Html.DisplayNameFor(item=>item.Name)
+			</div>
+			<div class="col text">
+				@Html.DisplayFor(u=>u.Name)
+			</div>
+		</div>
+		<hr/>
+		<div class="row text">
+			<div class="col ">
+				@Html.DisplayNameFor(item=>item.Manufacturer)
+			</div>
+			<div class="col">
+				@Html.DisplayFor(u=>u.Manufacturer)
+			</div>
+		</div>
+		<hr/>
+		<div class="row text">
+			<div class="col">
+				@Html.DisplayNameFor(item=>item.Geolocation)
+			</div>
+			<div class="col">
+				@Html.DisplayFor(u=>u.Geolocation)
+			</div>
+		</div>
+		<hr/>
+		<div class="row text">
+			<div class="col">
+				@Html.DisplayNameFor(item=>item.Sensors)
+			</div>
+			<div class="col">
+				@foreach(var item in @Model.Sensors)
+				{
+					counter++;
+					@if (counter == count) { 
+						<span>
+						@Html.DisplayFor(u=> item.Name)
+						</span>
+					}
+					else
+					{
+						<span>
+						@Html.DisplayFor(u=> item.Name), 
+						</span>
+					}
+				}
+			</div>
+		</div>
+		<hr/>
+		<div class="row text">
+			<div class="col">
+				@Html.DisplayNameFor(item=>item.LoadType)
+			</div>
+			<div class="col">
+				@Html.DisplayFor(u=>u.LoadType)
+			</div>
+		</div>
+		<hr/>
+		<div class="row text">
+			<div class="col">
+				@Html.DisplayNameFor(item=>item.Protocol)
+			</div>
+			<div class="col">
+				@Html.DisplayFor(u=>u.Protocol)
+			</div>
+		</div>
+		<hr/>
+		<div class="row text">
+			<div class="col">
+				@Html.DisplayNameFor(item=>item.PrefferedCommunication)
+			</div>
+			<div class="col">
+				@Html.DisplayFor(u=>u.PrefferedCommunication)
+			</div>
+		</div>
+		<hr/>
+		<div class="row text">
+			<div class="col">
+				@Html.DisplayNameFor(item=>item.TimeDelay)
+			</div>
+			<div class="col">
+				@Html.DisplayFor(u=>u.TimeDelay)
+			</div>
+		</div>
+		<hr/>
+		<div class="row text ">
+			<div class="col">
+				@Html.DisplayNameFor(item=>item.Address)
+			</div>
+			<div class="col text-break">
+				@Html.DisplayFor(u=>u.Address)
+			</div>
+		</div>
+		<div class="row justify-content-md-center">
+                    <a asp-action="ListStations" asp-controller="Meteo" class="btn btn-primary login-btn-without-border">Back to basic information</a>
+            </div>
+</div>

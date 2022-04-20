@@ -1,0 +1,391 @@
+@using BC;
+@model dynamic
+@{
+	ViewData["Title"] = "Graphs and export";
+
+}
+
+<div class="background-circle-graphs" style="height:500px;">
+	<form asp-action="Graphs" asp-controller="GraphExport" method="get">
+		<div class="row">
+			<div class="col">
+				<div id="chartContainer" style="height: 370px; width: 100%;"></div>
+				<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+			</div>
+			<div class="col-2" style="padding-top:1%;">
+				<div class="row justify-content-center">
+					<div class="dropdown-side" style="width:96%;">
+						<button class="dropbtn-side" style="width:96%; padding:15px; margin-left:0.3rem;">Choose meteostation</button>
+						<div class="dropdown-content-side">
+							@if(Model.Stations.Count != 0){
+									@foreach(Device device in Model.Stations){
+										<a class="next" asp-area="" asp-controller="Home" asp-action="Graphs" asp-route-id="@device.DevID" style="text-decoration:none;">@Html.DisplayFor(modelItem => device.Name)</a>
+										<br/>
+								}
+							}
+							else{
+									<li class="navlink text-dark">No meteostations!</li>
+							}
+						</div>
+					</div>
+				</div>
+	
+				<div class="row justify-content-center">
+					<div class="dropdown-side" style="width:100%; padding-top:15px;" >
+							<select name="idSensor" id="idSensor" class="form-select" onchange="showOptions(this)" style="background-color:#7292dd; width:93%;">
+									@if(Model.Sensors.Count != 0){
+										<option>Choose sensor</option>
+											@foreach(Sensors sensor in Model.Sensors){
+												<option id="@sensor.Name" value="@sensor.SenID">@sensor.Name</option>
+		
+										}
+									}
+									else{
+											<li class="navlink text-dark">No sensors!</li>
+									}
+						</select>
+							
+					</div>
+				</div>
+
+				<div class="input-group date" style="padding-top:20px;">
+					  <div class="dates" style="width:100%;">
+					  <div class="start_date input-group mb-4">
+						<input class="form-control start_date" type="text" placeholder="start date" id="startdate_datepicker" name="startDate">
+						<div class="input-group-append">
+						  <span class="fa fa-calendar input-group-text start_date_calendar" aria-hidden="true "></span>
+						</div>
+
+					  </div>
+					  <div class="end_date input-group mb-4">
+						<input class="form-control end_date" type="text" placeholder="end date" id="enddate_datepicker" name="endDate">
+						<div class="input-group-append">
+						  <span class="fa fa-calendar input-group-text end_date_calendar" aria-hidden="true "></span>
+						</div>
+					  </div>
+					</div>
+				</div>
+				
+				<button type="submit" class="btn btn-primary" style="width:100%;">Show graph</button>
+			</div>
+		</div>
+	</form>
+
+
+	<hr />
+	<hr />
+	<form asp-action="ExportData" asp-controller="GraphExport" method="get">
+		<h2 class="nadpis" style="color:white;">Export data to CSV<img src="../../background/icons/questionmark30.png" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Choose date from when to what date you want include data, also select one of your's meteostation to export to CSV.'"/></h2>
+		<div class="row justify-content-center">
+			<div class="col-3">
+			<div class="input-group date" style="padding-top:20px; padding-left:0px;">
+					  <div class="dates" style="width:100%;" >
+						  <div class="start_date input-group mb-4">
+							<input class="form-control start_date" type="text" placeholder="start date" id="startdate_datepickerExport" name="startDate">
+							<div class="input-group-append">
+							  <span class="fa fa-calendar input-group-text start_date_calendar" aria-hidden="true "></span>
+							</div>
+
+						  </div>
+					  <div class="end_date input-group mb-4">
+						<input class="form-control end_date" type="text" placeholder="end date" id="enddate_datepickerExport" name="endDate">
+						<div class="input-group-append">
+						  <span class="fa fa-calendar input-group-text end_date_calendar" aria-hidden="true "></span>
+						</div>
+					  </div>
+					</div>
+				</div>
+		</div>
+		<div class="w-100"></div>
+		<div class="col-3">
+			<div class="dropdown-side" style="width:100%; padding-left:0px;">
+
+							
+									<select name="id" class="form-select">
+										@if(Model.Stations.Count != 0){
+												@foreach(Device device in Model.Stations){
+													<option  value="@device.DevID">@device.Name</option>
+		
+											}
+										}
+										else{
+												<li class="navlink text-dark">No meteostations!</li>
+										}
+								</select>
+							
+			</div>
+
+		</div>
+		<div class="w-100"></div>
+		<div class="col-1">
+			<button id="exportBTN" type="submit" style="width:100%; margin-top:20px;" class="btn btn-primary" disabled="disabled">Export</button>
+		</div>
+		
+		</div>
+		<div class="row">
+			<div class="w-100"></div>
+			<div class="col-1 align-self-start">
+				<a  class="btn-my" asp-action="Index" asp-controller="Home"> 
+					<span class="button__icon" style="padding-top:3px;">
+						  <i class="bi bi-arrow-left-circle fa-2x"></i>
+					 </span>
+				 </a>
+			</div>
+		</div>
+	</form>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" />
+
+    <!-- Include Bootstrap Datepicker -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/css/bootstrap-datepicker.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/js/bootstrap-datepicker.min.js"></script>
+
+<script type="text/javascript">
+	
+	var startDate;
+	var endDate;
+	var sensor;
+	var startDateExport = false;
+	var endDateExport = false;
+	$('#startdate_datepicker').on('change', function (event) {
+        startDate = event.target.value;
+        console.log("startdate: " +  startDate);
+
+                     
+     });
+	 $('#enddate_datepicker').on('change', function (event) {
+        endDate = event.target.value;
+        console.log("endDate: " +  endDate);
+
+     });
+
+	 $('#startdate_datepickerExport').on('change', function (event) {
+		 if(!startDateExport){
+			 startDateExport = true;
+			 document.getElementById("exportBTN").disabled = true;
+		 }
+		 else{
+			 startDateExport = false;
+			 document.getElementById("exportBTN").disabled = true;
+		 }
+          if(startDateExport && endDateExport){
+			document.getElementById("exportBTN").disabled = false;
+		 }           
+     });
+	 $('#enddate_datepickerExport').on('change', function (event) {
+		 if(!endDateExport){
+			 endDateExport = true;
+			 document.getElementById("exportBTN").disabled = true;
+		 }
+		 else{
+			 endDateExport = false;
+			 document.getElementById("exportBTN").disabled = true;
+		 }
+		 if(startDateExport && endDateExport){
+			document.getElementById("exportBTN").disabled = false;
+		 }
+     });
+
+	 function showOptions(s){
+		 localStorage.setItem("globalName", s[s.selectedIndex].id);
+	 }
+	
+	 function sendDate(){
+		 $.ajax({
+			 url: "/Home/Graphs",
+			 type: "POST",
+			 url: '@Url.Action("Graphs", "Home")',
+			 data: {"startDate": startDate, "endDate" : endDate},
+	
+		 });
+		 
+	 }
+	$("#startdate_datepicker").datepicker({
+		format: "dd.mm.yyyy",
+		startDate: '@Model.MinDate',
+		endDate: '@Model.MaxDate',
+		todayBtn: "linked",
+		todayHighlight: true,
+		toggleActive: true,
+		autoclose: true,
+		clearBtn: true,
+
+	});
+	$("#enddate_datepicker").datepicker({
+		format: "dd.mm.yyyy",
+		startDate: '@Model.MinDate',
+		endDate: '@Model.MaxDate',
+		todayBtn: "linked",
+		todayHighlight: true,
+		toggleActive: true,
+		autoclose: true,
+		clearBtn: true,
+	});
+
+
+	$("#startdate_datepickerExport").datepicker({
+		format: "dd.mm.yyyy",
+		startDate: '@Model.MinDate',
+		endDate: '@Model.MaxDate',
+		todayBtn: "linked",
+		todayHighlight: true,
+		toggleActive: true,
+		autoclose: true,
+		clearBtn: true,
+
+	});
+	$("#enddate_datepickerExport").datepicker({
+		format: "dd.mm.yyyy",
+		startDate: '@Model.MinDate',
+		endDate: '@Model.MaxDate',
+		todayBtn: "linked",
+		todayHighlight: true,
+		toggleActive: true,
+		autoclose: true,
+		clearBtn: true,
+	});
+	var tmp;
+    var value;
+    var protocol;
+    var globalName;
+	var globalUnit;
+	//$('#graphSensors').on('change', function (event) {
+    //value = event.target.value;
+    //console.log("value: " +  value);
+    //document.getElementById("graphSensors").addEventListener("change", sensorName(value), false);
+                     
+	//});
+	function setGlobalName(){
+		var test = $('#idSensor option:selected').attr('id');
+		console.log(test);
+		localStorage.setItem("globalName", test);
+		//document.getElementById("idSensor").value = globalName;
+	}
+	
+
+
+
+window.onload = function () {
+
+
+	const data = '@ViewData["DataGraph"]';
+	console.log(localStorage.getItem("globalName"));
+	//var selectElement = document.getElementById('graphSensors');
+	//sconsole.log(selectElement.innerHTML);
+	const replaceWith = '"';
+	const result = data.replace(/&quot;/g, replaceWith);
+	//console.log(result);
+	const resultJSONDAteWihoutDots = result.replaceAll(/\./g,'-');
+	//console.log(resultJSONDAteWihoutDots);
+	const resultJSON = JSON.parse(resultJSONDAteWihoutDots);
+	//console.log("result: " + resultJSON);
+	let pointsArayMin=[];
+	let pointsArayMax=[];
+	let pointsArayAverage=[];
+	for(let i =0; i< resultJSON.length;i++){
+		let dateString = resultJSON[i]["Date"];
+		let dateArray = dateString.split("/");
+		console.log(dateString);
+		//dateArray[0] = day
+		//dateArray[1] = month
+		//dateArray[2] = year
+
+		//console.log(new Date(resultJSON[i]["Date"]).valueFormatString('dd MM yyyy'));
+		let dictMin={x: new Date(`${dateArray[1]}-${dateArray[0]}-${dateArray[2]}`), y: parseFloat(resultJSON[i]["Min"])};
+		let dictMax={x: new Date(`${dateArray[1]}-${dateArray[0]}-${dateArray[2]}`), y: parseFloat(resultJSON[i]["Max"])};
+		let dictAverage={x: new Date(`${dateArray[1]}-${dateArray[0]}-${dateArray[2]}`), y: parseFloat(resultJSON[i]["Average"])};
+		pointsArayMin.push(dictMin);
+		pointsArayMax.push(dictMax);
+		pointsArayAverage.push(dictAverage);
+	}
+
+
+	if(localStorage.getItem("globalName").toLowerCase() == "pressure"){
+		globalUnit = " hPa";
+	}else if(localStorage.getItem("globalName").toLowerCase() == "t28c04004b"){
+		globalUnit= " °C";
+	} else if(localStorage.getItem("globalName").toLowerCase() == "humidity"){
+		globalUnit = " %";
+	} else if(localStorage.getItem("globalName").toLowerCase() == "wind speed"){
+		globalUnit = " m/s";
+	}
+	else if(localStorage.getItem("globalName").toLowerCase() == "dew point"){
+		globalUnit = " °C";
+	}
+	else if(localStorage.getItem("globalName").toLowerCase() == "t apparent"){
+		globalUnit = " °C";
+	}
+	else if(localStorage.getItem("globalName").toLowerCase() == "wind direction"){
+		globalUnit = " °";
+	}
+	else{
+		globalUnit = "-";
+	}
+
+	console.log(pointsArayMin);
+	console.log(pointsArayMax);
+	console.log(pointsArayAverage);
+var chart = new CanvasJS.Chart("chartContainer", {
+	
+	animationEnabled: true,
+	title:{
+		text: "Weather data"
+	},
+	axisX: {
+		valueFormatString: "MMM DD YYYY"
+	},
+	axisY: {
+		title: localStorage.getItem("globalName"),
+		suffix: globalUnit
+	},
+	legend:{
+		cursor: "pointer",
+		fontSize: 16,
+		itemclick: toggleDataSeries
+	},
+	toolTip:{
+		shared: true
+	},
+	data: [{
+		name: "Min",
+		type: "spline",
+		yValueFormatString: "#0 " + globalUnit,
+		showInLegend: true,
+		dataPoints: pointsArayMin,
+	},
+	{
+		name: "Max",
+		type: "spline",
+		yValueFormatString: "#0 " +  globalUnit,
+		showInLegend: true,
+		dataPoints: pointsArayMax,
+	},
+	{
+		name: "Average",
+		type: "spline",
+		yValueFormatString: "#0 " + globalUnit,
+		showInLegend: true,
+		dataPoints: pointsArayAverage,
+	}]
+
+});
+chart.render();
+
+function toggleDataSeries(e){
+	if (typeof(e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
+		e.dataSeries.visible = false;
+	}
+	else{
+		e.dataSeries.visible = true;
+	}
+	chart.render();
+}
+
+}
+
+
+	
+</script>

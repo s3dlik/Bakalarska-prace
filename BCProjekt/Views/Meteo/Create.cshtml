@@ -1,0 +1,192 @@
+@model BC.Models.Device
+@{
+    ViewData["Title"] = "Add weather station";
+    
+
+}
+<h2 class="nadpis">Add new weather station</h2>
+
+<div class="row justify-content-center">
+    <div class="col-md-4">
+         <div class="dropdown-side" style="height:5%;">
+            <button class="dropbtn-side">Choose meteostation</button>
+            <div class="dropdown-content-side">
+            @if(ViewData["Stations"] != null){
+                    @foreach(Device device in ViewData["Stations"] as List<Device>){
+                        <a class="next" asp-area="" asp-controller="Meteo" asp-action="Create" asp-route-id="@device.DevID">@Html.DisplayFor(modelItem => device.Name)</a>
+                }
+            }
+            else{
+                    <li class="navlink text-dark">No meteostations!</li>
+            }
+            </div>
+        </div>
+
+        <div class="addMeteoDiv shadow-lg p-4  rounded">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <img src="../background/icons/questionmark30.png" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Please input meteostation name. For example: My meteo1"/>
+                <input asp-for="Name" class="form-control"/>
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+
+             <div class="col">
+                        <div class="row justify-content-center">
+                        <label class="control-label">Manufacturer</label>
+                        <img src="../background/icons/questionmark30.png" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Please input meteostation Manufacturer. For example: My Wario"/>
+                        </div>
+                        <div class="row justify-content-center">
+                                <select class="form-select" aria-label=".form-select-lg example" asp-for="Manufacturer" id="manuSelect"style="width:100%; padding-bottom:10px; ">
+                                    <option value="Default" name="manufacturerSelect">Choose manufacturer from below</option>
+                                  <option value="Wario" name="manufacturerSelect">Wario</option>
+                                  @*Here you can add custom manufacturer and also adjust javascript in file site.js*@
+                                </select>
+                        </div>
+            </div>
+            <label></label>
+
+            <div class="form-group">
+                <label asp-for="Address" class="control-label"></label>
+                <img src="../background/icons/questionmark30.png" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Please input your meteostation IP address. For example: 192.168.0.10.8"/>
+                <input asp-for="Address" class="form-control" id="inputAdd"/>
+                <span asp-validation-for="Address" class="text-danger"></span>
+            </div>
+
+            <label style="margin-top:8px;">Chooose preffered protocol</label>
+            <img src="../background/icons/questionmark30.png" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Please input what type of cummunication you prefer. PUSH - listening on URL and waiting for data or GET - requesting data from meteostation."/>
+            <div class="btn-group btn-group-toggle" data-toggle="buttons"style="width:100%; margin-top:8px;" id="protocolDiv">
+              <label class="btn btn-secondary">
+                <input type="radio" name="protocol" id="optionProtocol1" autocomplete="off" value="IP" asp-for="Protocol" > IP
+                <span asp-validation-for="Protocol" class="text-danger"></span>
+              </label>
+              <label class="btn btn-secondary disabled">
+                <input type="radio" name="protocol" id="optionProtocol2" autocomplete="off" asp-for="Protocol" value="RS-485"> RS-485
+                 <span asp-validation-for="Protocol" class="text-danger"></span>
+              </label>
+              <label class="btn btn-secondary disabled">
+                <input type="radio" name="protocol" id="optionProtocol3" autocomplete="off" asp-for="Protocol" value="RS-232"> RS-232
+                 <span asp-validation-for="Protocol" class="text-danger"></span>
+              </label>
+            </div>
+           
+            @*Tady bude na vyber typ komunikace. IP, RS485 atd..*@
+            <label style="margin-top:8px;">Choose load data type</label>
+            <img src="../background/icons/questionmark30.png" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Please choose one of the method. XML - server will accept XML file and process data from content of GET/POST request. CSV - server will accept CSV file and will process data from CSV file. URL - server will accept data from URL parameters."/>
+            <div class="btn-group btn-group-toggle" data-toggle="buttons"style="width:100%; margin-top:8px;" id="loadDiv">
+              <label class="btn btn-secondary">
+                <input type="radio" name="LoadType" class="option_type" id="loadOption" autocomplete="off" value="XML" checked="" asp-for="LoadType"> XML
+                <span asp-validation-for="LoadType" class="text-danger"></span>
+              </label>
+              <label class="btn btn-secondary" >
+                <input type="radio" name="LoadType" class="option_type" id="loadOption" autocomplete="off" asp-for="LoadType" value="URL"> URL
+                <span asp-validation-for="LoadType" class="text-danger"></span>
+              </label>
+              <label class="btn btn-secondary disabled" >
+                <input type="radio" name="radioDisabled" class="option_type" id="flexRadioDefault1" autocomplete="off"  asp-for="LoadType" value="CSV"> CSV
+                <span asp-validation-for="LoadType" class="text-danger"></span>
+              </label>
+              <label class="btn btn-secondary disabled">
+                <input type="radio" name="LoadType" class="option_type" id="loadOption" autocomplete="off" asp-for="LoadType" value="JSON"> JSON
+                <span asp-validation-for="LoadType" class="text-danger"></span>
+              </label>
+            </div>
+            
+            
+            <div class="form-group">
+                <label asp-for="Geolocation" class="control-label"></label>
+                <img src="../background/icons/questionmark30.png" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Please input where is meteostation located. For example: Ostrava-Zabreh Starobelska 52."/>
+                <input asp-for="Geolocation" class="form-control"/>
+                <span asp-validation-for="Geolocation" class="text-danger"></span>
+            </div>
+                   
+            <div class="form-group">
+                <div class="row">
+                    <div class="col">
+                        <label asp-for="TimeDelay" class="control-label"></label>
+                        <img src="../background/icons/questionmark30.png" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Please input number. That number will specify after what time the page refresh data. For example: 5 = this will refresh the page every 5 unit that you will choose."/>
+                        <input asp-for="TimeDelay" class="form-control"/>
+                        <span asp-validation-for="TimeDelay" class="text-danger"></span>
+                    </div>
+                    <div class="col">
+                        <div class="row justify-content-center">
+                        <label class="control-label">Unit</label>
+                        <img src="../background/icons/questionmark30.png" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Please choose unit type. For example: if you want to refresh every 5 minutes, input 5 into TimeDelay and choose minutes."/>
+                        </div>
+                        <div class="row justify-content-center">
+                                <select class="form-select" aria-label=".form-select-lg example" asp-for="Units">
+                                  <option value="Minutes" name="unitVal">Minutes</option>
+                                  <option value="Hours" name="unitVal">Hours</option>
+                                </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+
+            <label style="margin-top:8px;">Chooose preffered type of communicaton</label>
+            <img src="../background/icons/questionmark30.png" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Please input what type of cummunication you prefer. PUSH - listening on URL and waiting for data or GET - requesting data from meteostation."/>
+            <div class="btn-group btn-group-toggle" data-toggle="buttons"style="width:100%; margin-top:8px;">
+              <label class="btn btn-secondary active">
+                <input type="radio" name="options" id="option1" autocomplete="off" checked value="GET" asp-for="PrefferedCommunication" > GET
+              </label>
+              <label class="btn btn-secondary">
+                <input type="radio" name="options" id="option2" autocomplete="off" asp-for="PrefferedCommunication" value="POST"> POST
+              </label>
+            </div>
+            @*Tady jeste udelat nejaky dynamicky box na to, ze si bude vybirat jake senzory chce*@
+            <div id="DeviceItems"></div>
+            @*<button class="btnSensor" type="button" id="btnSensor" onclick="DeviceAdd()">+ Add sensor  <img src="../background/icons/questionmark30.png" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Add sensor names that you want to use. Please check URL/XML or CSV file to specify exact sensor names."/></button>*@
+            @*Dynamically generated input for sensors*@
+            <div id="SensorsDiv" style="padding-top:15px;">
+                
+            </div>
+
+            <div id="testAdd"></div>
+            <div class="row justify-content-md-center">
+                <div class="col-sm">
+                    @*<input type="submit" value="Create" class="btn btn-primary" />*@
+                    <button type="submit" class="btn btn-primary login-btn-without-border">Add station</button>
+                    </div>
+                    <div class="col-sm">
+                    @*<a href="../../Home" value="Cancel" class="btn btn-primary" style="padding-top:12px;">Cancel</a>*@
+                    <button class="btn btn-primary login-btn-without-border" asp-action="Index" asp-controller="Home" >Cancel</button>
+                </div>
+            </div>
+            <div id="rest"></div>
+            
+        </form>
+        <script type="text/javascript">
+
+                var tmp;
+                var manu;
+                var protocol;
+                
+                $('#manuSelect').on('change', function (event) {
+                    manu = event.target.value;
+                    console.log("manufactturer: " +  manu);
+                     document.getElementById("manuSelect").addEventListener("change", Manufacturer(manu), false);
+                     
+                });
+                $('#protocolDiv').on('change', function (event) {
+                    protocol = event.target.value;
+                    console.log("protocol: " +  protocol);
+                     document.getElementById("protocolDiv").addEventListener("change", protocolValue(protocol), false);
+
+                });
+               
+                $('#loadDiv').on('change', function (event) {
+                    tmp = event.target.value;
+                    console.log("data type: " + tmp);
+                     document.getElementById("inputAdd").addEventListener("change", onAdressChange(tmp), false);
+
+                });
+                changeButtonName();   
+                
+                
+                
+            </script>
+    </div>
+</div>
+</div>

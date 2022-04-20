@@ -1,0 +1,43 @@
+@model IEnumerable<BC.Models.User>
+<h2 class="nadpis">User profile</h2>
+
+<div class="profileDiv shadow-lg p-3 mb-5 rounded">
+    <div class="row">
+        <div class="col">
+        <p>
+            @Html.DisplayNameFor(model => model.Login)
+        </p>     
+        <p>
+            @Html.DisplayNameFor(model => model.Email)
+        </p>
+        <p>
+            @Html.DisplayNameFor(model => model.Registered)
+        </p>
+        <p>
+            @Html.DisplayNameFor(model => model.LastLogin)
+        </p>
+        </div>
+    <div class="col">
+        @foreach(var item in Model)
+        {
+            <p>@Html.DisplayFor(modelItem=>item.Login)</p>
+            <p>@Html.DisplayFor(modelItem=>item.Email)</p>
+            <p>@Html.DisplayFor(modelItem=>item.Registered)</p>
+            <p>@Html.DisplayFor(modelItem=>item.LastLogin)</p>
+
+            
+        }
+    </div>
+    
+    </div>
+    @foreach(var item in Model){
+        <div class="row">
+                <div class="col align-self-start">
+                    <a  class="btn login-btn" asp-action="Edit" asp-controller="User" asp-route-id="@item.UserID">Edit profile</a>
+                </div>
+                <div class="col align-self-end">
+                    <a class="btn login-btn" asp-action="Index" asp-controller="Home" >Home</a>
+                </div>
+        </div>
+        }
+</div>

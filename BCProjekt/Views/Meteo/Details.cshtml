@@ -1,0 +1,51 @@
+@model BC.Models.Device
+@{
+    ViewData["Title"] = "Details";
+}
+
+<div>
+    <h4>Meteostation: @Html.DisplayFor(model => model.Name) details</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Geolocation)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Geolocation)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Address)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Address)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.LoadType)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.LoadType)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.PrefferedCommunication)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.PrefferedCommunication)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Protocol)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Protocol)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Index" asp-controller="Home">Back to home</a>
+    <a asp-action="Edit" asp-controller="Meteo" asp-route-id="@Model.DevID">Edit</a>
+</div>

@@ -1,0 +1,44 @@
+@model IEnumerable<BC.Models.Device>
+
+@{
+    ViewData["Title"] = "All stations";
+}
+<div class="row justify-content-center list-stations">
+    <div class="col-6">
+        <h4 class="nadpis" style="color:black;">List of your all stations with basic information</h4>
+        <hr />
+            @foreach (var item in Model){
+                <dl class="row">
+                    <dt class="col-sm-2">
+                        Name
+                    </dt>
+                    <dd class="col-sm-10">
+                        @item.Name
+                    </dd>
+                    <dt class="col-sm-2">
+                        Geolocation
+                    </dt>
+                    <dd class="col-sm-10 text-justify">
+                        @item.Geolocation
+                    </dd>
+                    <dt class="col-sm-2">
+                        Address
+                    </dt>
+                    <dd class="col-sm-10 text-break">
+                        @item.Address
+                    </dd>
+                </dl>
+                    <div>
+                        <form method-"post" asp-action="Delete" asp-route-id="@item.DevID">
+                            <a class="btn btn-primary" asp-action="AdvancedDetails" asp-controller="Meteo" asp-route-id="@item.DevID">Advanced details</a> 
+                            <a class="btn btn-secondary" asp-action="Edit" asp-controller="Meteo" asp-route-id="@item.DevID"><i class="bi bi-pen"></i></a> 
+                            <button type="submit" class="btn btn-outline-danger" onclick="return confirm('Are you sure you want to delete device: @item.Name')"><i class="bi bi-trash"></i></button>
+                        </form>
+                         
+                        
+                    </div>
+                <hr />
+            }
+            <a class="btn btn-primary" asp-action="Index" asp-controller="Home">Home</a>
+    </div>
+</div>
