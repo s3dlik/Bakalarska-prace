@@ -148,22 +148,17 @@
                 <input type="radio" name="options" id="option2" autocomplete="off" asp-for="PrefferedCommunication" value="POST"> POST
               </label>
             </div>
-            @*Tady jeste udelat nejaky dynamicky box na to, ze si bude vybirat jake senzory chce*@
-            <div id="DeviceItems"></div>
-            @*<button class="btnSensor" type="button" id="btnSensor" onclick="DeviceAdd()">+ Add sensor  <img src="../background/icons/questionmark30.png" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Add sensor names that you want to use. Please check URL/XML or CSV file to specify exact sensor names."/></button>*@
-            @*Dynamically generated input for sensors*@
-            <div id="SensorsDiv" style="padding-top:15px;">
+             <div id="DeviceItems"></div>
+             <div id="SensorsDiv" style="padding-top:15px;">
                 
             </div>
 
             <div id="testAdd"></div>
             <div class="row justify-content-md-center">
                 <div class="col-sm">
-                    @*<input type="submit" value="Create" class="btn btn-primary" />*@
                     <button type="submit" class="btn btn-primary login-btn-without-border">Add station</button>
                     </div>
                     <div class="col-sm">
-                    @*<a href="../../Home" value="Cancel" class="btn btn-primary" style="padding-top:12px;">Cancel</a>*@
                     <button class="btn btn-primary login-btn-without-border" asp-action="Index" asp-controller="Home" >Cancel</button>
                 </div>
             </div>
