@@ -8,6 +8,7 @@ namespace BC.Models
         [Key]
         public int SenID { get; set; }
         public string Name { get; set; }
+        public ICollection<Values> Values { get; set; }
         public Device Device { get; set; }
     }
 }

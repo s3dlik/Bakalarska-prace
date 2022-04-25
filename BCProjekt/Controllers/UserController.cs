@@ -46,7 +46,6 @@ namespace BC.Controllers
             {
                 try
                 {
-                    
                     user.Password = Crypto.HashPassword(user.Password);
                     _context.Update(user);
 

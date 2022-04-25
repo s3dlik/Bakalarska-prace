@@ -5,26 +5,39 @@
 
 }
 <h2 class="nadpis">Add new weather station</h2>
-
 <div class="row justify-content-center">
-    <div class="col-md-4">
-         <div class="dropdown-side" style="height:5%;">
+    <div class="col-3">
+        <div class="dropdown-side" style="height:5%; padding-bottom:10px;">
             <button class="dropbtn-side">Choose meteostation</button>
             <div class="dropdown-content-side">
-            @if(ViewData["Stations"] != null){
-                    @foreach(Device device in ViewData["Stations"] as List<Device>){
-                        <a class="next" asp-area="" asp-controller="Meteo" asp-action="Create" asp-route-id="@device.DevID">@Html.DisplayFor(modelItem => device.Name)</a>
+                @if(ViewData["Stations"] != null){
+                        @foreach(Device device in ViewData["Stations"] as List<Device>){
+                            <a class="next" asp-area="" asp-controller="Meteo" asp-action="Create" asp-route-id="@device.DevID">@Html.DisplayFor(modelItem => device.Name)</a>
+
+                    }
                 }
-            }
-            else{
-                    <li class="navlink text-dark">No meteostations!</li>
-            }
+                else{
+                        <li class="navlink text-dark">No meteostations!</li>
+                }
             </div>
         </div>
-
+    </div>
+</div>
+<div class="row justify-content-center">
+    <div class="col-md-4">
+         
         <div class="addMeteoDiv shadow-lg p-4  rounded">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                @if(ViewBag.CreateError != null)
+                {
+                    <div class="alert alert-danger d-flex align-items-center" role="alert">
+                    <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
+                    <div>
+                        @ViewBag.CreateError
+                    </div>
+                </div>
+                }
             <div class="form-group">
                 <label asp-for="Name" class="control-label"></label>
                 <img src="../background/icons/questionmark30.png" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Please input meteostation name. For example: My meteo1"/>
@@ -84,7 +97,7 @@
                 <span asp-validation-for="LoadType" class="text-danger"></span>
               </label>
               <label class="btn btn-secondary disabled" >
-                <input type="radio" name="radioDisabled" class="option_type" id="flexRadioDefault1" autocomplete="off"  asp-for="LoadType" value="CSV"> CSV
+                <input type="radio" name="LoadType" class="option_type" id="loadOption" autocomplete="off"  asp-for="LoadType" value="CSV"> CSV
                 <span asp-validation-for="LoadType" class="text-danger"></span>
               </label>
               <label class="btn btn-secondary disabled">

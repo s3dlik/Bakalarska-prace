@@ -19,7 +19,7 @@
 						<div class="dropdown-content-side">
 							@if(Model.Stations.Count != 0){
 									@foreach(Device device in Model.Stations){
-										<a class="next" asp-area="" asp-controller="Home" asp-action="Graphs" asp-route-id="@device.DevID" style="text-decoration:none;">@Html.DisplayFor(modelItem => device.Name)</a>
+										<a class="next" asp-area="" asp-controller="GraphExport" asp-action="Graphs" asp-route-id="@device.DevID" style="text-decoration:none;">@Html.DisplayFor(modelItem => device.Name)</a>
 										<br/>
 								}
 							}
