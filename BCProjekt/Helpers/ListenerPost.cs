@@ -27,7 +27,7 @@ namespace BC.Helpers
                 string responseString = "<HTML><BODY> Hello world!</BODY></HTML>";
                 byte[] buffer = System.Text.Encoding.UTF8.GetBytes(responseString);
                 string text;
-                if ((int)response.StatusCode >= 200 && (int)response.StatusCode < 300)
+                if ((int)response.StatusCode != 500)
                 {
                     using (var reader = new StreamReader(request.InputStream, request.ContentEncoding))
                     {
