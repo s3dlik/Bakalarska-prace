@@ -13,7 +13,7 @@ namespace BC.Helpers
         public ListenerPost() { }
         public override void listener()
         {
-            
+            System.Console.WriteLine("jsem v listeneru");
             while (true)
             {
 
@@ -58,9 +58,30 @@ namespace BC.Helpers
                 }
             }
         }
-        public void parseData()
+
+        public override void parseDataCSV(string CSV)
         {
-            System.Console.WriteLine("parsing data");
+            throw new NotImplementedException();
+        }
+
+        public override void parseDataJSON(string JSON)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void parseDataURL(string text)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void parseDataURL(string URL, string format)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void parseDataXML(string text)
+        {
+            throw new NotImplementedException();
         }
     }
 }
