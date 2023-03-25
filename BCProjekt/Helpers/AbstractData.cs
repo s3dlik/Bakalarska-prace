@@ -17,5 +17,7 @@ namespace BC.Helpers
         public abstract void parseDataJSON(string JSON);
 
         public abstract void listener();
+
+        public abstract void ParseQueryString(string query);
     }
 }
