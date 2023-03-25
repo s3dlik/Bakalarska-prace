@@ -41,15 +41,21 @@ namespace BC.Helpers
                 format += "?";
             }
             var fullURL = URL + format;
+            ParseQueryString(fullURL);
+        }
+
+        public override void ParseQueryString(string query) { 
+            var data = query.Replace("?", "").Split('&').ToDictionary(pair => pair.Split('=').First(), pair => pair.Split('=').Last());
+
             URLtoDict uRLtoDict = new();
-            
-            var data = uRLtoDict.ParseQueryString(fullURL);
+
             data.Remove(data.ElementAt(0).Key);
             singleData.returnInstance().dataList.Clear();
             foreach (var item in data)
             {
                 singleData.returnInstance().dataList.Add(new Parser(item.Key, item.Value));
             }
+
         }
 
         public override void parseDataXML(string text)
